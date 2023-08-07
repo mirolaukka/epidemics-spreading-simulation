@@ -2,6 +2,8 @@
 
 This project simulates epidemic spreading using the SIR (Susceptible-Infectious-Recovered) model. The SIR model is a classic epidemiological model that divides a population into three compartments: susceptible, infected, and recovered individuals. The simulation demonstrates the progression of an epidemic over time and shows how different parameters, such as infection rate, recovery rate, and transmission radius, affect the spread of the disease.
 
+<img src="sir_plot.png" alt="SIR Model Plot" width="400" height="400"><img src="sir_simulation.gif" alt="SIR Model Simulation" width="400" height="400">
+
 ## SIR Model Overview
 
 The SIR model is a compartmental model used to understand the spread of infectious diseases within a population. The three compartments are defined as follows:
@@ -52,7 +54,7 @@ The project requires the following libraries to be installed:
 
    Note: The graph window will close automatically after viewing the simulation results.
 
-<img src="sir_plot.png" alt="SIR Model Plot" width="400" height="400">
+
 
 4. Alternatively, run the live simulation:
 
@@ -64,7 +66,7 @@ The project requires the following libraries to be installed:
 
    You can adjust the simulation parameters like `BETA`, `GAMMA`, `PROXIMITY`, and `POPULATION` in the `simulation.py` file as needed.
 
-<img src="sir_simulation.gif" alt="SIR Model Simulation" width="400" height="400">
+
 
 ## Customization
 
