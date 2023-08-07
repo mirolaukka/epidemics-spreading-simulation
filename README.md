@@ -52,7 +52,7 @@ The project requires the following libraries to be installed:
 
    Note: The graph window will close automatically after viewing the simulation results.
 
-<img src="sir_plot.png" alt="SIR Model Plot" width="400" height="300">
+<img src="sir_plot.png" alt="SIR Model Plot" width="500" height="400">
 
 4. Alternatively, run the live simulation:
 
@@ -64,7 +64,7 @@ The project requires the following libraries to be installed:
 
    You can adjust the simulation parameters like `BETA`, `GAMMA`, `PROXIMITY`, and `POPULATION` in the `simulation.py` file as needed.
 
-![SIR Model Simulation](sir_simulation.gif)
+<img src="sir_simulation.gif" alt="SIR Model Simulation" width="500" height="500">
 
 ## Customization
 
