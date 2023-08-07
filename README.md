@@ -64,7 +64,7 @@ The project requires the following libraries to be installed:
 
    You can adjust the simulation parameters like `BETA`, `GAMMA`, `PROXIMITY`, and `POPULATION` in the `simulation.py` file as needed.
 
-<img src="sir_simulation.gif" alt="SIR Model Simulation" width="500" height="500">
+<img src="sir_simulation.gif" alt="SIR Model Simulation" width="400" height="300">
 
 ## Customization
 
