@@ -52,7 +52,7 @@ The project requires the following libraries to be installed:
 
    Note: The graph window will close automatically after viewing the simulation results.
 
-![SIR Model Plot](sir_plot.png)
+<img src="sir_plot.png" alt="SIR Model Plot" width="600">
 
 4. Alternatively, run the live simulation:
 
