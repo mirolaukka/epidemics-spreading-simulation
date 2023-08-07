@@ -35,7 +35,7 @@ The project requires the following libraries to be installed:
 1. Clone the repository to your local machine:
 
    ```
-   git clone https://github.com/your-username/sir-model-simulation.git
+   git clone https://github.com/mirolaukka/sir-model-simulation.git
    ```
 2. Install requirements:
 
