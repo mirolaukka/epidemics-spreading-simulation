@@ -1,23 +1,22 @@
 import pygame
 import random
 import math
-import imageio
+
+import matplotlib.pyplot as plt
 
 # Pygame setup
 pygame.init()
 
 # Window dimensions
-width, height = 500, 500
+width, height = 800, 600
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('SIR Model Simulation - S:0 I:0 R:0')
-frames = []  # To store simulation frames for GIF
-
 
 # SIR model parameters
 BETA = 0.04       # Infection rate
 GAMMA = 0.005     # Recovery rate
 PROXIMITY = 30    # Transmission radius
-POPULATION = 1000
+POPULATION = 1500
 INITIAL_INFECTED = 1
 
 # Color codes
@@ -27,8 +26,12 @@ COLOR_CODES = {
     'R': (0, 0, 255)    # Blue
 }
 
+# Graph parameters
+s_data, i_data, r_data = [], [], []
 
 # Particle class representing individuals
+
+
 class Individual:
     def __init__(self, state):
         self.x = random.randint(0, width)
@@ -44,26 +47,16 @@ class Individual:
 
 
 def simulate_sir_model(population_size, initial_infected, beta, gamma, proximity):
-    """
-    Simulate the SIR model.
-
-    Parameters:
-        population_size (int): Total population size.
-        initial_infected (int): Initial number of infected individuals.
-        beta (float): Infection rate.
-        gamma (float): Recovery rate.
-        proximity (float): Transmission radius (proximity).
-
-    Returns:
-        List: A list of Individuals representing the final state of the population.
-    """
     population_list = [Individual('S') for _ in range(population_size)]
     infected_individuals = random.sample(population_list, initial_infected)
     for individual in infected_individuals:
         individual.state = 'I'
 
+    day = 0  # Counter for days.
+
     # Run the simulation until all individuals are recovered
     while any(person.state == 'I' for person in population_list):
+        day += 1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -88,38 +81,53 @@ def simulate_sir_model(population_size, initial_infected, beta, gamma, proximity
         for person in population_list:
             person.draw()
 
-        pygame.display.set_caption(
-            f'SIR Model Simulation - I:{sum(person.state == "I" for person in population_list)}')
+        susceptible_count = sum(
+            person.state == "S" for person in population_list)
+        infected_count = sum(
+            person.state == "I" for person in population_list)
+        recovered_count = sum(
+            person.state == "R" for person in population_list)
 
-        frames.append(pygame.surfarray.array3d(screen))
+        pygame.display.set_caption(
+            f'SEIRS Model Simulation - S:{susceptible_count} | I:{infected_count} | R:{recovered_count} | DAY: {day}')
 
         pygame.display.flip()
 
-    return population_list
+        # Append data for the graph
+        s_data.append(sum(person.state == "S" for person in population_list))
+        i_data.append(sum(person.state == "I" for person in population_list))
+        r_data.append(sum(person.state == "R" for person in population_list))
 
 
-def create_sir_simulation_gif(frames, filename, frame_duration):
-    """
-    Create a GIF animation from the list of frames.
+def plot_graph():
+    plt.style.use('seaborn-v0_8-whitegrid')
 
-    Parameters:
-        frames (List): A list of frames as NumPy arrays.
-        filename (str): Name of the output GIF file.
-        frame_duration (int): Milliseconds per frame for GIF.
-    """
-    imageio.mimsave(filename, frames, duration=frame_duration / 1000.0)
-    print(f'GIF saved as {filename}')
+    # Convert to (r, g, b) format
+    s_color = tuple(c / 255.0 for c in COLOR_CODES['S'])
+    # Convert to (r, g, b) format
+    i_color = tuple(c / 255.0 for c in COLOR_CODES['I'])
+    # Convert to (r, g, b) format
+    r_color = tuple(c / 255.0 for c in COLOR_CODES['R'])
+
+    plt.plot(s_data, label='Susceptible', linewidth=2, color=s_color)  # Green
+    plt.plot(i_data, label='Infected', linewidth=2, color=i_color)    # Red
+    plt.plot(r_data, label='Recovered', linewidth=2, color=r_color)  # Blue
+    plt.xlabel('Days')
+    plt.ylabel('Population')
+    plt.title(
+        f'SEIRS Epidemic Spreading Simulation with Proximity\nBeta={BETA}, Gamma={GAMMA}\nProximity={PROXIMITY}, Population={POPULATION}, Initial Infected={INITIAL_INFECTED}')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
 
 def main():
-    # SIR model simulation
-    population_list = simulate_sir_model(
-        POPULATION, INITIAL_INFECTED, BETA, GAMMA, PROXIMITY)
+    global s_data, i_data, r_data
 
-    # Save the frames as a GIF
-    gif_filename = 'sir_simulation.gif'
-    frame_duration = 100  # Milliseconds per frame for GIF
-    create_sir_simulation_gif(frames, gif_filename, frame_duration)
+    # SIR model simulation
+    simulate_sir_model(POPULATION, INITIAL_INFECTED, BETA, GAMMA, PROXIMITY)
+
+    plot_graph()
 
     pygame.quit()
 
