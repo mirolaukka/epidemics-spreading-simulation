@@ -73,7 +73,7 @@ class SEIRS:
     Args:
         population (int): Total population size.
         initial_infected (int): Initial number of infected individuals.
-        alpha (float): Exposed to Infected rate.
+        alpha (float): Reduction in susceptibility for recovered individuals.
         beta (float): Infection transmission rate.
         gamma (float): Recovery rate.
         sigma (float): Exposed to Infectious transition time.
@@ -88,7 +88,7 @@ class SEIRS:
         INITIAL_INFECTED (int): Initial number of infected individuals.
         PROXIMITY (int): Maximum distance for infection transmission.
         MAX_DAYS (int): Maximum number of simulation days.
-        ALPHA (float): Exposed to Infected rate.
+        ALPHA (float): Reduction in susceptibility for recovered individuals.
         BETA (float): Infection transmission rate.
         GAMMA (float): Recovery rate.
         SIGMA (float): Exposed to Infectious transition time.

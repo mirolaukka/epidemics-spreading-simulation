@@ -48,7 +48,7 @@ You can modify the following arguments in the `SEIRS` class constructor to custo
 
 - `population` (int): Total population size. (Default: 1500)
 - `initial_infected` (int): Initial number of infected individuals. (Default: 15)
-- `alpha` (float): Exposed to Infected rate. (Default: 0.2)
+- `alpha` (float): Reduction in susceptibility for recovered individuals. (Default: 0.2)
 - `beta` (float): Infection transmission rate. (Default: 0.1)
 - `gamma` (float): Recovery rate. (Default: 0.005)
 - `sigma` (float): Exposed to Infectious transition time. (Default: 10)
