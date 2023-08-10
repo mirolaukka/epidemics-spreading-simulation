@@ -76,8 +76,8 @@ class SEIRS:
         alpha (float): Reduction in susceptibility for recovered individuals.
         beta (float): Infection transmission rate.
         gamma (float): Recovery rate.
-        sigma (float): Exposed to Infectious transition time.
-        mu (float): Recovery time.
+        sigma (float): Exposed to Infectious transition time in days.
+        mu (float): Recovery time in days.
         proximity (int): Maximum distance for infection transmission.
         max_days (int): Maximum number of simulation days.
         width (int): Width of the visualization screen.
@@ -91,8 +91,8 @@ class SEIRS:
         ALPHA (float): Reduction in susceptibility for recovered individuals.
         BETA (float): Infection transmission rate.
         GAMMA (float): Recovery rate.
-        SIGMA (float): Exposed to Infectious transition time.
-        MU (float): Recovery time.
+        SIGMA (float): Exposed to Infectious transition time in days.
+        MU (float): Recovery time in days.
         individuals (list): List of Individual instances representing the population.
         infected_individuals (list): List of initially infected Individual instances.
         day (int): Current simulation day.
@@ -309,7 +309,7 @@ class SEIRS:
         plt.xlabel('Days')
         plt.ylabel('Population')
         plt.title(
-            f'SEIRS Epidemic Spreading Simulation with Proximity\nα={self.ALPHA}, β={self.BETA}, γ={self.GAMMA}, σ={self.SIGMA}, μ={self.MU}\nproximity={self.PROXIMITY}, population_size={self.POPULATION_SIZE}, initial infected={self.INITIAL_INFECTED}')
+            f'SEIRS Epidemic Spreading Simulation with Proximity\nAlpha={self.ALPHA}, Beta={self.BETA}, Gamma={self.GAMMA}, Sigma={self.SIGMA}, Mu={self.MU}\nproximity={self.PROXIMITY}, population_size={self.POPULATION_SIZE}, initial infected={self.INITIAL_INFECTED}')
         plt.legend()
         plt.grid(True)
         plt.show()
