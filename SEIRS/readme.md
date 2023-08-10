@@ -108,7 +108,7 @@ The simulation can be run with or without live visualization. In live visualizat
 To run the default simulation values and visualize the model, you can use the provided `test_seirs.py` file:
 
 ```bash
-python test_sir.py
+python test_seirs.py
 ```
 
 ## License
