@@ -149,7 +149,7 @@ class SIR:
             screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
             pygame.display.set_caption('SIR Model Simulation')
 
-        self.individuals = [Individual('S', screen=screen if live_visualization else None)
+        self.individuals = [Individual('S', screen=screen if live_visualization else None, width=self.WIDTH, height=self.HEIGHT)
                             for _ in range(self.POPULATION_SIZE)]
 
         self.infected_individuals = random.sample(

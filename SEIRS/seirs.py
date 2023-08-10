@@ -165,7 +165,7 @@ class SEIRS:
             screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
             pygame.display.set_caption('SEIRS Model Simulation')
 
-        self.individuals = [Individual('S', self.BETA, screen=screen if live_visualization else None)
+        self.individuals = [Individual('S', self.BETA, screen=screen if live_visualization else None, width=self.WIDTH, height=self.HEIGHT)
                             for _ in range(self.POPULATION_SIZE)]
 
         self.infected_individuals = random.sample(
