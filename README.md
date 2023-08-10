@@ -1,83 +1,61 @@
-# Epidemic Spreading Simulation using SIR Model
+Sure, here's a template for the README file of your epidemic simulation project GitHub repository:
 
-This project simulates epidemic spreading using the SIR (Susceptible-Infectious-Recovered) model. The SIR model is a classic epidemiological model that divides a population into three compartments: susceptible, infected, and recovered individuals. The simulation demonstrates the progression of an epidemic over time and shows how different parameters, such as infection rate, recovery rate, and transmission radius, affect the spread of the disease.
+---
 
-<img src="sir_plot.png" alt="SIR Model Plot" width="400" height="400">  <img src="sir_simulation.gif" alt="SIR Model Simulation" width="400" height="400">
+# Epidemic Spreading Simulation (SIR, SEIRD, SEIRS)
 
-## SIR Model Overview
+This repository contains an epidemic spreading simulation project that implements three different models: SIR (Susceptible-Infectious-Recovered), SEIRD (Susceptible-Exposed-Infectious-Recovered-Deceased), and SEIRS (Susceptible-Exposed-Infectious-Recovered-Susceptible). These models are used to simulate the spread of infectious diseases within a population.
 
-The SIR model is a compartmental model used to understand the spread of infectious diseases within a population. The three compartments are defined as follows:
+## Table of Contents
 
-- **Susceptible (S)**: Individuals who are susceptible to infection.
-- **Infected (I)**: Individuals who are currently infected and can transmit the disease to susceptible individuals.
-- **Recovered (R)**: Individuals who have recovered from the infection and gained immunity.
+- [Introduction](#introduction)
+- [Models](#models)
+  - [SIR Model](#sir-model)
+  - [SEIRD Model](#seird-model)
+  - [SEIRS Model](#seirs-model)
+- [Usage](#usage)
+- [Requirements](#requirements)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Files
+## Introduction
 
-The project consists of two Python files:
+In the field of epidemiology, understanding how diseases spread within a population is crucial for making informed decisions regarding public health interventions. This project provides implementations for three common epidemic models: SIR, SEIRD, and SEIRS. Each model builds upon the previous one by introducing new compartments to capture different stages of the disease progression.
 
-1. `graph.py`: This file contains a function to simulate the SIR model and plot the results on a graph using Matplotlib.
+## Models
 
-2. `simulation.py`: This file contains a function to simulate the SIR model in real-time using Pygame. The simulation visually represents the spread of the epidemic and generates a GIF animation capturing the progression.
+### SIR Model
 
-## Requirements
+The SIR model divides the population into three compartments: susceptible (S), infectious (I), and recovered (R). It assumes that individuals who recover from the disease gain immunity and cannot be infected again during the simulation.
 
-The project requires the following libraries to be installed:
+### SEIRD Model
 
-- Python 3.x
-- NumPy
-- Matplotlib
-- Pygame
-- Imageio
+The SEIRD model extends the SIR model by introducing an additional compartment for exposed (E) individuals. Exposed individuals are not yet infectious but have been exposed to the disease and may transition to the infectious state after a certain incubation period. This model also includes a compartment for deceased (D) individuals to track the fatalities due to the disease.
+
+### SEIRS Model
+
+The SEIRS model further extends the SEIRD model by allowing recovered individuals to transition back to the susceptible state. This accounts for the waning immunity over time and the possibility of reinfection, which is particularly relevant for diseases with short-lived immunity.
 
 ## Usage
 
-1. Clone the repository to your local machine:
+Each model (SIR, SEIRD, SEIRS) has its own directory within this repository, containing the necessary scripts and files for running simulations. To run a simulation, navigate to the respective model's directory and follow the instructions provided in the associated `readme.md` file.
 
-   ```
-   git clone https://github.com/mirolaukka/sir-model-simulation.git
-   ```
-2. Install requirements:
+## Requirements
 
-   ```
-   cd sir-model-simulation
-   pip install -r requirements.txt 
-   ```
+The simulations are implemented using Python and require certain dependencies to be installed. You can find the necessary Python packages listed in the `requirements.txt` file at the root of this repository. To install the required packages, you can use the following command:
 
-3. Run the simulation:
+```bash
+pip install -r requirements.txt
+```
 
-   ```
-   python graph.py
-   ```
+## Contributing
 
-   The `graph.py` file will simulate the SIR model and display the results in a Matplotlib graph. You can adjust the simulation parameters like `BETA`, `GAMMA`, `PROXIMITY`, `POPULATION`, `INITIAL_INFECTED`, and `DAYS` as needed.
-
-   Note: The graph window will close automatically after viewing the simulation results.
-
-
-
-4. Alternatively, run the live simulation:
-
-   ```
-   python simulation.py
-   ```
-
-   The `simulation.py` file will simulate the SIR model using Pygame and display a real-time animation of the epidemic spreading. The animation is saved as `sir_simulation.gif` in the same directory.
-
-   You can adjust the simulation parameters like `BETA`, `GAMMA`, `PROXIMITY`, and `POPULATION` in the `simulation.py` file as needed.
-
-
-
-## Customization
-
-Feel free to customize the project according to your needs. You can modify the simulation parameters, add new features, or integrate the SIR model into other applications.
+Contributions to this project are welcome and encouraged. If you find any issues, have ideas for improvements, or would like to add new features, feel free to create pull requests. Please refer to the [Contribution Guidelines](CONTRIBUTING.md) for more information on how to contribute.
 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
 
-## Acknowledgments
+---
 
-- The SIR model and epidemic spreading simulation are based on classical epidemiological concepts.
-- The Pygame visualization is inspired by real-time simulations in game development.
-- Special thanks to the developers of NumPy, Matplotlib, Pygame, and Imageio for their excellent libraries.
+Feel free to customize and expand upon this README template to suit your project's specific details and requirements.
