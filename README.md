@@ -1,7 +1,3 @@
-Sure, here's a template for the README file of your epidemic simulation project GitHub repository:
-
----
-
 # Epidemic Spreading Simulation (SIR, SEIRD, SEIRS)
 
 This repository contains an epidemic spreading simulation project that implements three different models: SIR (Susceptible-Infectious-Recovered), SEIRD (Susceptible-Exposed-Infectious-Recovered-Deceased), and SEIRS (Susceptible-Exposed-Infectious-Recovered-Susceptible). These models are used to simulate the spread of infectious diseases within a population.
