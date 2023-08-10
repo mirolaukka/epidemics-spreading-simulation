@@ -11,7 +11,6 @@ This repository contains an epidemic spreading simulation project that implement
   - [SEIRS Model](#seirs-model)
 - [Usage](#usage)
 - [Requirements](#requirements)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Introduction
@@ -43,10 +42,6 @@ The simulations are implemented using Python and require certain dependencies to
 ```bash
 pip install -r requirements.txt
 ```
-
-## Contributing
-
-Contributions to this project are welcome and encouraged. If you find any issues, have ideas for improvements, or would like to add new features, feel free to create pull requests. Please refer to the [Contribution Guidelines](CONTRIBUTING.md) for more information on how to contribute.
 
 ## License
 
