@@ -43,6 +43,10 @@ The simulations are implemented using Python and require certain dependencies to
 pip install -r requirements.txt
 ```
 
+## TODO
+
+* Need to optimize SEIRD and SEIRS alot. Current runtime is around 60 seconds with default parameters.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
