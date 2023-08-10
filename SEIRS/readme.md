@@ -72,17 +72,17 @@ You can customize the simulation by adjusting the provided parameters. These par
 from seirs import SEIRS
 
 # Customize simulation parameters
-population_size = 1500
-initial_infected = 15
-alpha = 0.2
-beta = 0.1
-gamma = 0.005
-sigma = 10
-mu = 120
-proximity = 30
-max_days = 1000
-width = 800
-height = 600
+population_size = 1500  # Total population size
+initial_infected = 15   # Initial number of infected individuals
+alpha = 0.2             # Reduction in susceptibility for recovered individuals.
+beta = 0.1              # Infection transmission rate
+gamma = 0.005           # Recovery rate
+sigma = 10              # Exposed to Infected rate in days
+mu = 120                # Recovered to Susceptible rate in days
+proximity = 30          # Proximity threshold for infection transmission
+max_days = 1000         # Maximum number of simulation days
+width = 800             # Width of the visualization screen
+height = 600            # Height of the visualization screen.
 
 # Create an instance of the SEIRS simulation model
 model = SEIRS(population=population_size, initial_infected=initial_infected,

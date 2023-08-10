@@ -67,14 +67,14 @@ You can customize the simulation by adjusting the provided parameters. These par
 from sir import SIR
 
 # Customize simulation parameters
-population_size = 1500
-initial_infected = 15
-beta = 0.1
-gamma = 0.005
-proximity = 30
-max_days = 1000
-width = 800
-height = 600
+population_size = 1500  # Total population size
+initial_infected = 15   # Initial number of infected individuals
+beta = 0.1              # Infection transmission rate
+gamma = 0.005           # Recovery rate
+proximity = 30          # Proximity threshold for infection transmission
+max_days = 1000         # Maximum number of simulation days
+width = 800             # Width of the visualization screen
+height = 600            # Height of the visualization screen.
 
 # Create an instance of the SIR simulation model
 model = SIR(population=population_size, initial_infected=initial_infected,
