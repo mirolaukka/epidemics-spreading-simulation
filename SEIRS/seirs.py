@@ -4,10 +4,6 @@ import math
 import matplotlib.pyplot as plt
 
 
-# Window dimensions
-width, height = 800, 600
-
-
 class Individual:
     """
     Represents an individual in the simulation.
@@ -29,7 +25,7 @@ class Individual:
         screen (pygame.Surface): The Pygame screen object for visualization.
     """
 
-    def __init__(self, state, beta, screen=None):
+    def __init__(self, state, beta, screen=None, width: int = 800, height: int = 600):
         self.x = random.randint(0, width)
         self.y = random.randint(0, height)
         self.state = state
@@ -161,17 +157,24 @@ class SEIRS:
         This method simulates the spread of an epidemic using the SEIRS model. It updates the states of individuals
         and collects data for plotting.
         """
+
+        if live_visualization:
+            # Pygame setup
+            pygame.init()
+
+            screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+            pygame.display.set_caption('SEIRS Model Simulation')
+
+        self.individuals = [Individual('S', self.BETA, screen=screen if live_visualization else None)
+                            for _ in range(self.POPULATION_SIZE)]
+
+        self.infected_individuals = random.sample(
+            self.individuals, self.INITIAL_INFECTED)
+
+        for individual in self.infected_individuals:
+            individual.state = 'I'
+
         if not live_visualization:
-
-            self.individuals = [Individual('S', self.BETA)
-                                for _ in range(self.POPULATION_SIZE)]
-
-            self.infected_individuals = random.sample(
-                self.individuals, self.INITIAL_INFECTED)
-
-            for individual in self.infected_individuals:
-                individual.state = 'I'
-
             while any((person.state == 'I' or person.state == 'E') for person in self.individuals) and self.day <= self.MAX_DAYS:
                 self.day += 1
                 for person in self.individuals:
@@ -212,21 +215,6 @@ class SEIRS:
                     print(f"Day: {self.day}/{self.MAX_DAYS}")
 
         else:
-            # Pygame setup
-            pygame.init()
-
-            screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-            pygame.display.set_caption('SEIRS Model Simulation - S:0 I:0 R:0')
-
-            self.individuals = [Individual('S', self.BETA, screen)
-                                for _ in range(self.POPULATION_SIZE)]
-
-            self.infected_individuals = random.sample(
-                self.individuals, self.INITIAL_INFECTED)
-
-            for individual in self.infected_individuals:
-                individual.state = 'I'
-
             while any((person.state == 'I' or person.state == 'E') for person in self.individuals) and self.day <= self.MAX_DAYS:
                 self.day += 1
 

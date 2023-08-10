@@ -4,10 +4,6 @@ import math
 import matplotlib.pyplot as plt
 
 
-# Window dimensions
-width, height = 800, 600
-
-
 class Individual:
     """
     Represents an individual in the SIR model simulation.
@@ -26,7 +22,7 @@ class Individual:
         distance_to(other_individual): Calculate the Euclidean distance to another individual.
     """
 
-    def __init__(self, state, screen=None):
+    def __init__(self, state, screen=None, width: int = 800, height: int = 600):
         self.x = random.randint(0, width)
         self.y = random.randint(0, height)
         self.state = state
@@ -140,19 +136,29 @@ class SIR:
         Run the SIR simulation.
 
         Args:
-            live_visualization (bool, optional): Whether to show live visualization using Pygame. Defaults to False.
+            live_visualization (bool): Whether to visualize the simulation in real-time using Pygame.
+
+        This method simulates the spread of an epidemic using the SIR model. It updates the states of individuals
+        and collects data for plotting.
         """
+
+        if live_visualization:
+            # Pygame setup
+            pygame.init()
+
+            screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+            pygame.display.set_caption('SIR Model Simulation')
+
+        self.individuals = [Individual('S', screen=screen if live_visualization else None)
+                            for _ in range(self.POPULATION_SIZE)]
+
+        self.infected_individuals = random.sample(
+            self.individuals, self.INITIAL_INFECTED)
+
+        for individual in self.infected_individuals:
+            individual.state = 'I'
+
         if not live_visualization:
-
-            self.individuals = [Individual('S')
-                                for _ in range(self.POPULATION_SIZE)]
-
-            self.infected_individuals = random.sample(
-                self.individuals, self.INITIAL_INFECTED)
-
-            for individual in self.infected_individuals:
-                individual.state = 'I'
-
             while any(person.state == 'I' for person in self.individuals) and self.day <= self.MAX_DAYS:
                 self.day += 1
                 for person in self.individuals:
@@ -178,21 +184,6 @@ class SIR:
                     print(f"Day: {self.day}/{self.MAX_DAYS}")
 
         else:
-            # Pygame setup
-            pygame.init()
-
-            screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-            pygame.display.set_caption('SIR Model Simulation')
-
-            self.individuals = [Individual('S', screen)
-                                for _ in range(self.POPULATION_SIZE)]
-
-            self.infected_individuals = random.sample(
-                self.individuals, self.INITIAL_INFECTED)
-
-            for individual in self.infected_individuals:
-                individual.state = 'I'
-
             while any(person.state == 'I' for person in self.individuals) and self.day <= self.MAX_DAYS:
                 self.day += 1
 
