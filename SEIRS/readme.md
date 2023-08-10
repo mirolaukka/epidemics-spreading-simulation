@@ -7,6 +7,10 @@ This repository contains an implementation of the SEIRS (Susceptible-Exposed-Inf
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Customization](#customization)
+- [Example Usage](#example-usage)
+- [Visualization](#visualization)
+- [Testing](#testing)
 - [License](#license)
 
 ## Introduction
@@ -58,6 +62,10 @@ You can modify the following arguments in the `SEIRS` class constructor to custo
 - `width` (int): Width of the visualization screen. (Default: 800)
 - `height` (int): Height of the visualization screen. (Default: 600)
 
+## Customization
+
+You can customize the simulation by adjusting the provided parameters. These parameters control various aspects of the simulation, such as population size, infection rate, recovery rate, and visualization dimensions.
+
 ### Example Usage
 
 ```python
@@ -89,6 +97,19 @@ model.simulate(live_visualization=True)
 model.plot_graph()
 ```
 
+## Visualization
+
+The simulation can be run with or without live visualization. In live visualization mode, individuals are represented as colored circles on the screen, showing their states (S, E, I, R) (Green, Yellow, Red, Blue).
+
+
+
+## Testing
+
+To run the default simulation values and visualize the model, you can use the provided `test_seirs.py` file:
+
+```bash
+python test_sir.py
+```
 
 ## License
 
