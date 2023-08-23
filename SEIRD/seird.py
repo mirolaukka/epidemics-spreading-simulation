@@ -38,12 +38,12 @@ class Individual:
         self.modified_beta = beta
         self.infection_count = 0
         self.COLOR_CODES = {
-            'S': (0, 255, 0),       # Green
-            'E': (255, 255, 0),     # Yellow
-            'I': (255, 0, 0),       # Red
-            'R': (0, 0, 255),       # Blue
-            'D': (85, 85, 85),      # Gray
-            'Immune': (252, 0, 230)  # Pink
+            "S": (0, 255, 0),  # Green
+            "E": (255, 255, 0),  # Yellow
+            "I": (255, 0, 0),  # Red
+            "R": (0, 0, 255),  # Blue
+            "D": (85, 85, 85),  # Gray
+            "Immune": (252, 0, 230),  # Pink
         }
         self.screen = screen
 
@@ -66,7 +66,9 @@ class Individual:
         Returns:
             float: The Euclidean distance between this individual and the other individual.
         """
-        return math.sqrt((self.x - other_individual.x)**2 + (self.y - other_individual.y)**2)
+        return math.sqrt(
+            (self.x - other_individual.x) ** 2 + (self.y - other_individual.y) ** 2
+        )
 
 
 class SEIRD:
@@ -115,21 +117,22 @@ class SEIRD:
         HEIGHT (int): Height of the simulation visualization.
     """
 
-    def __init__(self,
-                 population: int = 1500,
-                 initial_infected: int = 15,
-                 alpha: float = 0.2,
-                 beta: float = 0.1,
-                 gamma: float = 0.005,
-                 sigma: float = 10,
-                 eta: float = 0.0005,
-                 mu: float = 120,
-                 kappa: int = 100,
-                 proximity: int = 30,
-                 max_days: int = 1000,
-                 width: int = 800,
-                 height: int = 600):
-
+    def __init__(
+        self,
+        population: int = 1500,
+        initial_infected: int = 15,
+        alpha: float = 0.2,
+        beta: float = 0.1,
+        gamma: float = 0.005,
+        sigma: float = 10,
+        eta: float = 0.0005,
+        mu: float = 120,
+        kappa: int = 100,
+        proximity: int = 30,
+        max_days: int = 1000,
+        width: int = 800,
+        height: int = 600,
+    ):
         self.POPULATION_SIZE = population
         self.INITIAL_INFECTED = initial_infected
         self.PROXIMITY = proximity
@@ -149,16 +152,22 @@ class SEIRD:
 
         self.day = 0
 
-        self.s_data, self.i_data, self.r_data, self.e_data, self.d_data, self.immune_data = [
-        ], [], [], [], [], []
+        (
+            self.s_data,
+            self.i_data,
+            self.r_data,
+            self.e_data,
+            self.d_data,
+            self.immune_data,
+        ) = ([], [], [], [], [], [])
 
         self.COLOR_CODES = {
-            'S': (0, 255, 0),       # Green
-            'E': (255, 255, 0),     # Yellow
-            'I': (255, 0, 0),       # Red
-            'R': (0, 0, 255),       # Blue
-            'D': (85, 85, 85),      # Gray
-            'Immune': (252, 0, 230)  # Pink
+            "S": (0, 255, 0),  # Green
+            "E": (255, 255, 0),  # Yellow
+            "I": (255, 0, 0),  # Red
+            "R": (0, 0, 255),  # Blue
+            "D": (85, 85, 85),  # Gray
+            "Immune": (252, 0, 230),  # Pink
         }
 
         # Pygame variables
@@ -181,75 +190,103 @@ class SEIRD:
             pygame.init()
 
             screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-            pygame.display.set_caption('SEIRD Model Simulation')
+            pygame.display.set_caption("SEIRD Model Simulation")
 
-        self.individuals = [Individual('S', self.BETA, screen=screen if live_visualization else None, width=self.WIDTH, height=self.HEIGHT)
-                            for _ in range(self.POPULATION_SIZE)]
+        self.individuals = [
+            Individual(
+                "S",
+                self.BETA,
+                screen=screen if live_visualization else None,
+                width=self.WIDTH,
+                height=self.HEIGHT,
+            )
+            for _ in range(self.POPULATION_SIZE)
+        ]
 
         self.infected_individuals = random.sample(
-            self.individuals, self.INITIAL_INFECTED)
+            self.individuals, self.INITIAL_INFECTED
+        )
 
         for individual in self.infected_individuals:
-            individual.state = 'I'
+            individual.state = "I"
 
         if not live_visualization:
-            while any((person.state == 'I' or person.state == 'E') for person in self.individuals) and self.day <= self.MAX_DAYS:
+            while (
+                any(
+                    (person.state == "I" or person.state == "E")
+                    for person in self.individuals
+                )
+                and self.day <= self.MAX_DAYS
+            ):
                 self.day += 1
 
                 for person in self.individuals:
-                    if person.state == 'E':
+                    if person.state == "E":
                         person.exposed_duration += 1
-                        if person.exposed_duration >= self.SIGMA:  # Exposed to Infectious transition
-                            person.state = 'I'
+                        if (
+                            person.exposed_duration >= self.SIGMA
+                        ):  # Exposed to Infectious transition
+                            person.state = "I"
                             person.exposed_duration = 0
                             person.infection_count += 1
-                    elif person.state == 'I':
+                    elif person.state == "I":
                         if random.random() < self.GAMMA:
-
                             if random.random() < self.ETA:
-                                person.state = 'D'
+                                person.state = "D"
                             else:
-                                person.state = 'R'
+                                person.state = "R"
 
                         elif random.random() < self.ETA:
-                            person.state = 'D'
+                            person.state = "D"
                         else:
-
-                            person.modified_beta *= (1 - self.ALPHA)
+                            person.modified_beta *= 1 - self.ALPHA
 
                             for other_person in self.individuals:
-                                if other_person.state == 'S':
+                                if other_person.state == "S":
                                     distance = person.distance_to(other_person)
-                                    if distance <= self.PROXIMITY and random.random() < person.modified_beta:
-                                        other_person.state = 'E'
+                                    if (
+                                        distance <= self.PROXIMITY
+                                        and random.random() < person.modified_beta
+                                    ):
+                                        other_person.state = "E"
 
-                    elif person.state == 'R':
-
+                    elif person.state == "R":
                         # If person has been infected self.KAPPA times, it's immune
                         if person.infection_count >= self.KAPPA:
-                            person.state = 'Immune'
+                            person.state = "Immune"
                         else:
                             person.recovered_days += 1
                             if person.recovered_days >= self.MU:
-                                person.state = 'S'
+                                person.state = "S"
                                 person.recovered_days = 0
 
                 self.s_data.append(
-                    sum(person.state == "S" for person in self.individuals))
+                    sum(person.state == "S" for person in self.individuals)
+                )
                 self.e_data.append(
-                    sum(person.state == "E" for person in self.individuals))
+                    sum(person.state == "E" for person in self.individuals)
+                )
                 self.i_data.append(
-                    sum(person.state == "I" for person in self.individuals))
+                    sum(person.state == "I" for person in self.individuals)
+                )
                 self.r_data.append(
-                    sum(person.state == "R" for person in self.individuals))
+                    sum(person.state == "R" for person in self.individuals)
+                )
                 self.d_data.append(
-                    sum(person.state == "D" for person in self.individuals))
+                    sum(person.state == "D" for person in self.individuals)
+                )
 
                 if self.day % 10 == 0:
                     print(f"Day: {self.day}/{self.MAX_DAYS}")
 
         else:
-            while any((person.state == 'I' or person.state == 'E') for person in self.individuals) and self.day <= self.MAX_DAYS:
+            while (
+                any(
+                    (person.state == "I" or person.state == "E")
+                    for person in self.individuals
+                )
+                and self.day <= self.MAX_DAYS
+            ):
                 self.day += 1
 
                 for event in pygame.event.get():
@@ -261,41 +298,43 @@ class SEIRD:
                 screen.fill((255, 255, 255))
 
                 for person in self.individuals:
-                    if person.state == 'E':
+                    if person.state == "E":
                         person.exposed_duration += 1
-                        if person.exposed_duration >= self.SIGMA:  # Exposed to Infectious transition
-                            person.state = 'I'
+                        if (
+                            person.exposed_duration >= self.SIGMA
+                        ):  # Exposed to Infectious transition
+                            person.state = "I"
                             person.exposed_duration = 0
                             person.infection_count += 1
-                    elif person.state == 'I':
+                    elif person.state == "I":
                         if random.random() < self.GAMMA:
-
                             if random.random() < self.ETA:
-                                person.state = 'D'
+                                person.state = "D"
                             else:
-                                person.state = 'R'
+                                person.state = "R"
 
                         elif random.random() < self.ETA:
-                            person.state = 'D'
+                            person.state = "D"
                         else:
-
-                            person.modified_beta *= (1 - self.ALPHA)
+                            person.modified_beta *= 1 - self.ALPHA
 
                             for other_person in self.individuals:
-                                if other_person.state == 'S':
+                                if other_person.state == "S":
                                     distance = person.distance_to(other_person)
-                                    if distance <= self.PROXIMITY and random.random() < person.modified_beta:
-                                        other_person.state = 'E'
+                                    if (
+                                        distance <= self.PROXIMITY
+                                        and random.random() < person.modified_beta
+                                    ):
+                                        other_person.state = "E"
 
-                    elif person.state == 'R':
-
+                    elif person.state == "R":
                         # If person has been infected self.KAPPA times, it's immune
                         if person.infection_count >= self.KAPPA:
-                            person.state = 'Immune'
+                            person.state = "Immune"
                         else:
                             person.recovered_days += 1
                             if person.recovered_days >= self.MU:
-                                person.state = 'S'
+                                person.state = "S"
                                 person.recovered_days = 0
 
                 # Draw individuals with updated states
@@ -303,20 +342,21 @@ class SEIRD:
                     person.draw()
 
                 susceptible_count = sum(
-                    person.state == "S" for person in self.individuals)
-                exposed_count = sum(
-                    person.state == "E" for person in self.individuals)
-                infected_count = sum(
-                    person.state == "I" for person in self.individuals)
+                    person.state == "S" for person in self.individuals
+                )
+                exposed_count = sum(person.state == "E" for person in self.individuals)
+                infected_count = sum(person.state == "I" for person in self.individuals)
                 recovered_count = sum(
-                    person.state == "R" for person in self.individuals)
-                dead_count = sum(
-                    person.state == "D" for person in self.individuals)
+                    person.state == "R" for person in self.individuals
+                )
+                dead_count = sum(person.state == "D" for person in self.individuals)
                 immune_count = sum(
-                    person.state == 'Immune' for person in self.individuals)
+                    person.state == "Immune" for person in self.individuals
+                )
 
                 pygame.display.set_caption(
-                    f'SEIRD Model Simulation - S:{susceptible_count} | E:{exposed_count} | I:{infected_count} | R:{recovered_count} | D: {dead_count} | Immune: {immune_count} | DAY: {self.day}')
+                    f"SEIRD Model Simulation - S:{susceptible_count} | E:{exposed_count} | I:{infected_count} | R:{recovered_count} | D: {dead_count} | Immune: {immune_count} | DAY: {self.day}"
+                )
 
                 pygame.display.flip()
 
@@ -336,26 +376,26 @@ class SEIRD:
 
         This method creates a graph displaying the susceptible, exposed, infected, recovered, dead, and immune populations over time.
         """
-        plt.style.use('seaborn-v0_8-whitegrid')
+        plt.style.use("seaborn-v0_8-whitegrid")
 
-        s_color = tuple(c / 255.0 for c in self.COLOR_CODES['S'])
-        e_color = tuple(c / 255.0 for c in self.COLOR_CODES['E'])
-        i_color = tuple(c / 255.0 for c in self.COLOR_CODES['I'])
-        r_color = tuple(c / 255.0 for c in self.COLOR_CODES['R'])
-        d_color = tuple(c / 255.0 for c in self.COLOR_CODES['D'])
-        immune_color = tuple(c / 255.0 for c in self.COLOR_CODES['Immune'])
+        s_color = tuple(c / 255.0 for c in self.COLOR_CODES["S"])
+        e_color = tuple(c / 255.0 for c in self.COLOR_CODES["E"])
+        i_color = tuple(c / 255.0 for c in self.COLOR_CODES["I"])
+        r_color = tuple(c / 255.0 for c in self.COLOR_CODES["R"])
+        d_color = tuple(c / 255.0 for c in self.COLOR_CODES["D"])
+        immune_color = tuple(c / 255.0 for c in self.COLOR_CODES["Immune"])
 
-        plt.plot(self.s_data, label='Susceptible', linewidth=2, color=s_color)
-        plt.plot(self.e_data, label='Exposed', linewidth=2, color=e_color)
-        plt.plot(self.i_data, label='Infected', linewidth=2, color=i_color)
-        plt.plot(self.r_data, label='Recovered', linewidth=2, color=r_color)
-        plt.plot(self.d_data, label='Dead', linewidth=2, color=d_color)
-        plt.plot(self.immune_data, label='Immune',
-                 linewidth=2, color=immune_color)
-        plt.xlabel('Days')
-        plt.ylabel('Population')
+        plt.plot(self.s_data, label="Susceptible", linewidth=2, color=s_color)
+        plt.plot(self.e_data, label="Exposed", linewidth=2, color=e_color)
+        plt.plot(self.i_data, label="Infected", linewidth=2, color=i_color)
+        plt.plot(self.r_data, label="Recovered", linewidth=2, color=r_color)
+        plt.plot(self.d_data, label="Dead", linewidth=2, color=d_color)
+        plt.plot(self.immune_data, label="Immune", linewidth=2, color=immune_color)
+        plt.xlabel("Days")
+        plt.ylabel("Population")
         plt.title(
-            f'SEIRD Epidemic Spreading Simulation with Proximity\nAlpha={self.ALPHA}, Beta={self.BETA}, Gamma={self.GAMMA}, Sigma={self.SIGMA}, Mu={self.MU}\nEta={self.ETA}, Kappa={self.KAPPA}, proximity={self.PROXIMITY}, population_size={self.POPULATION_SIZE}, initial infected={self.INITIAL_INFECTED}')
+            f"SEIRD Epidemic Spreading Simulation with Proximity\nAlpha={self.ALPHA}, Beta={self.BETA}, Gamma={self.GAMMA}, Sigma={self.SIGMA}, Mu={self.MU}\nEta={self.ETA}, Kappa={self.KAPPA}, proximity={self.PROXIMITY}, population_size={self.POPULATION_SIZE}, initial infected={self.INITIAL_INFECTED}"
+        )
         plt.legend()
         plt.grid(True)
         plt.show()

@@ -33,10 +33,10 @@ class Individual:
         self.recovered_days = 0
         self.modified_beta = beta
         self.COLOR_CODES = {
-            'S': (0, 255, 0),   # Green
-            'E': (255, 255, 0),  # Yellow
-            'I': (255, 0, 0),   # Red
-            'R': (0, 0, 255)    # Blue
+            "S": (0, 255, 0),  # Green
+            "E": (255, 255, 0),  # Yellow
+            "I": (255, 0, 0),  # Red
+            "R": (0, 0, 255),  # Blue
         }
         self.screen = screen
 
@@ -59,7 +59,9 @@ class Individual:
         Returns:
             float: The Euclidean distance between this individual and the other individual.
         """
-        return math.sqrt((self.x - other_individual.x)**2 + (self.y - other_individual.y)**2)
+        return math.sqrt(
+            (self.x - other_individual.x) ** 2 + (self.y - other_individual.y) ** 2
+        )
 
 
 class SEIRS:
@@ -105,19 +107,20 @@ class SEIRS:
         plot_graph(): Plot the simulation results using Matplotlib.
     """
 
-    def __init__(self,
-                 population: int = 1500,
-                 initial_infected: int = 15,
-                 alpha: float = 0.2,
-                 beta: float = 0.1,
-                 gamma: float = 0.005,
-                 sigma: float = 10,
-                 mu: float = 120,
-                 proximity: int = 30,
-                 max_days: int = 1000,
-                 width: int = 800,
-                 height: int = 600):
-
+    def __init__(
+        self,
+        population: int = 1500,
+        initial_infected: int = 15,
+        alpha: float = 0.2,
+        beta: float = 0.1,
+        gamma: float = 0.005,
+        sigma: float = 10,
+        mu: float = 120,
+        proximity: int = 30,
+        max_days: int = 1000,
+        width: int = 800,
+        height: int = 600,
+    ):
         self.POPULATION_SIZE = population
         self.INITIAL_INFECTED = initial_infected
         self.PROXIMITY = proximity
@@ -137,10 +140,10 @@ class SEIRS:
         self.s_data, self.i_data, self.r_data, self.e_data = [], [], [], []
 
         self.COLOR_CODES = {
-            'S': (0, 255, 0),   # Green
-            'E': (255, 255, 0),  # Yellow
-            'I': (255, 0, 0),   # Red
-            'R': (0, 0, 255)    # Blue
+            "S": (0, 255, 0),  # Green
+            "E": (255, 255, 0),  # Yellow
+            "I": (255, 0, 0),  # Red
+            "R": (0, 0, 255),  # Blue
         }
 
         # Pygame variables
@@ -163,59 +166,88 @@ class SEIRS:
             pygame.init()
 
             screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-            pygame.display.set_caption('SEIRS Model Simulation')
+            pygame.display.set_caption("SEIRS Model Simulation")
 
-        self.individuals = [Individual('S', self.BETA, screen=screen if live_visualization else None, width=self.WIDTH, height=self.HEIGHT)
-                            for _ in range(self.POPULATION_SIZE)]
+        self.individuals = [
+            Individual(
+                "S",
+                self.BETA,
+                screen=screen if live_visualization else None,
+                width=self.WIDTH,
+                height=self.HEIGHT,
+            )
+            for _ in range(self.POPULATION_SIZE)
+        ]
 
         self.infected_individuals = random.sample(
-            self.individuals, self.INITIAL_INFECTED)
+            self.individuals, self.INITIAL_INFECTED
+        )
 
         for individual in self.infected_individuals:
-            individual.state = 'I'
+            individual.state = "I"
 
         if not live_visualization:
-            while any((person.state == 'I' or person.state == 'E') for person in self.individuals) and self.day <= self.MAX_DAYS:
+            while (
+                any(
+                    (person.state == "I" or person.state == "E")
+                    for person in self.individuals
+                )
+                and self.day <= self.MAX_DAYS
+            ):
                 self.day += 1
                 for person in self.individuals:
-                    if person.state == 'E':
+                    if person.state == "E":
                         person.exposed_duration += 1
-                        if person.exposed_duration >= self.SIGMA:  # Exposed to Infectious transition
-                            person.state = 'I'
+                        if (
+                            person.exposed_duration >= self.SIGMA
+                        ):  # Exposed to Infectious transition
+                            person.state = "I"
                             person.exposed_duration = 0
-                    elif person.state == 'I':
+                    elif person.state == "I":
                         if random.random() < self.GAMMA:
-                            person.state = 'R'
+                            person.state = "R"
                         else:
-
-                            person.modified_beta *= (1 - self.ALPHA)
+                            person.modified_beta *= 1 - self.ALPHA
 
                             for other_person in self.individuals:
-                                if other_person.state == 'S':
+                                if other_person.state == "S":
                                     distance = person.distance_to(other_person)
-                                    if distance <= self.PROXIMITY and random.random() < person.modified_beta:
-                                        other_person.state = 'E'
+                                    if (
+                                        distance <= self.PROXIMITY
+                                        and random.random() < person.modified_beta
+                                    ):
+                                        other_person.state = "E"
 
-                    elif person.state == 'R':
+                    elif person.state == "R":
                         person.recovered_days += 1
                         if person.recovered_days >= self.MU:
-                            person.state = 'S'
+                            person.state = "S"
                             person.recovered_days = 0
 
                 self.s_data.append(
-                    sum(person.state == "S" for person in self.individuals))
+                    sum(person.state == "S" for person in self.individuals)
+                )
                 self.i_data.append(
-                    sum(person.state == "I" for person in self.individuals))
+                    sum(person.state == "I" for person in self.individuals)
+                )
                 self.r_data.append(
-                    sum(person.state == "R" for person in self.individuals))
+                    sum(person.state == "R" for person in self.individuals)
+                )
                 self.e_data.append(
-                    sum(person.state == "E" for person in self.individuals))
+                    sum(person.state == "E" for person in self.individuals)
+                )
 
                 if self.day % 10 == 0:
                     print(f"Day: {self.day}/{self.MAX_DAYS}")
 
         else:
-            while any((person.state == 'I' or person.state == 'E') for person in self.individuals) and self.day <= self.MAX_DAYS:
+            while (
+                any(
+                    (person.state == "I" or person.state == "E")
+                    for person in self.individuals
+                )
+                and self.day <= self.MAX_DAYS
+            ):
                 self.day += 1
 
                 for event in pygame.event.get():
@@ -227,28 +259,32 @@ class SEIRS:
                 screen.fill((255, 255, 255))
 
                 for person in self.individuals:
-                    if person.state == 'E':
+                    if person.state == "E":
                         person.exposed_duration += 1
-                        if person.exposed_duration >= self.SIGMA:  # Exposed to Infectious transition
-                            person.state = 'I'
+                        if (
+                            person.exposed_duration >= self.SIGMA
+                        ):  # Exposed to Infectious transition
+                            person.state = "I"
                             person.exposed_duration = 0
-                    elif person.state == 'I':
+                    elif person.state == "I":
                         if random.random() < self.GAMMA:
-                            person.state = 'R'
+                            person.state = "R"
                         else:
-
-                            person.modified_beta *= (1 - self.ALPHA)
+                            person.modified_beta *= 1 - self.ALPHA
 
                             for other_person in self.individuals:
-                                if other_person.state == 'S':
+                                if other_person.state == "S":
                                     distance = person.distance_to(other_person)
-                                    if distance <= self.PROXIMITY and random.random() < person.modified_beta:
-                                        other_person.state = 'E'
+                                    if (
+                                        distance <= self.PROXIMITY
+                                        and random.random() < person.modified_beta
+                                    ):
+                                        other_person.state = "E"
 
-                    elif person.state == 'R':
+                    elif person.state == "R":
                         person.recovered_days += 1
                         if person.recovered_days >= self.MU:
-                            person.state = 'S'
+                            person.state = "S"
                             person.recovered_days = 0
 
                 # Draw individuals with updated states
@@ -256,16 +292,17 @@ class SEIRS:
                     person.draw()
 
                 susceptible_count = sum(
-                    person.state == "S" for person in self.individuals)
-                infected_count = sum(
-                    person.state == "I" for person in self.individuals)
-                exposed_count = sum(
-                    person.state == "E" for person in self.individuals)
+                    person.state == "S" for person in self.individuals
+                )
+                infected_count = sum(person.state == "I" for person in self.individuals)
+                exposed_count = sum(person.state == "E" for person in self.individuals)
                 recovered_count = sum(
-                    person.state == "R" for person in self.individuals)
+                    person.state == "R" for person in self.individuals
+                )
 
                 pygame.display.set_caption(
-                    f'SEIRS Model Simulation - S:{susceptible_count} | I:{infected_count} | E:{exposed_count} | R:{recovered_count} | DAY: {self.day}')
+                    f"SEIRS Model Simulation - S:{susceptible_count} | I:{infected_count} | E:{exposed_count} | R:{recovered_count} | DAY: {self.day}"
+                )
 
                 pygame.display.flip()
 
@@ -283,21 +320,22 @@ class SEIRS:
 
         This method creates a graph displaying the susceptible, infected, recovered, and exposed populations over time.
         """
-        plt.style.use('seaborn-v0_8-whitegrid')
+        plt.style.use("seaborn-v0_8-whitegrid")
 
-        s_color = tuple(c / 255.0 for c in self.COLOR_CODES['S'])
-        i_color = tuple(c / 255.0 for c in self.COLOR_CODES['I'])
-        r_color = tuple(c / 255.0 for c in self.COLOR_CODES['R'])
-        e_color = tuple(c / 255.0 for c in self.COLOR_CODES['E'])
+        s_color = tuple(c / 255.0 for c in self.COLOR_CODES["S"])
+        i_color = tuple(c / 255.0 for c in self.COLOR_CODES["I"])
+        r_color = tuple(c / 255.0 for c in self.COLOR_CODES["R"])
+        e_color = tuple(c / 255.0 for c in self.COLOR_CODES["E"])
 
-        plt.plot(self.s_data, label='Susceptible', linewidth=2, color=s_color)
-        plt.plot(self.i_data, label='Infected', linewidth=2, color=i_color)
-        plt.plot(self.r_data, label='Recovered', linewidth=2, color=r_color)
-        plt.plot(self.e_data, label='Exposed', linewidth=2, color=e_color)
-        plt.xlabel('Days')
-        plt.ylabel('Population')
+        plt.plot(self.s_data, label="Susceptible", linewidth=2, color=s_color)
+        plt.plot(self.i_data, label="Infected", linewidth=2, color=i_color)
+        plt.plot(self.r_data, label="Recovered", linewidth=2, color=r_color)
+        plt.plot(self.e_data, label="Exposed", linewidth=2, color=e_color)
+        plt.xlabel("Days")
+        plt.ylabel("Population")
         plt.title(
-            f'SEIRS Epidemic Spreading Simulation with Proximity\nAlpha={self.ALPHA}, Beta={self.BETA}, Gamma={self.GAMMA}, Sigma={self.SIGMA}, Mu={self.MU}\nproximity={self.PROXIMITY}, population_size={self.POPULATION_SIZE}, initial infected={self.INITIAL_INFECTED}')
+            f"SEIRS Epidemic Spreading Simulation with Proximity\nAlpha={self.ALPHA}, Beta={self.BETA}, Gamma={self.GAMMA}, Sigma={self.SIGMA}, Mu={self.MU}\nproximity={self.PROXIMITY}, population_size={self.POPULATION_SIZE}, initial infected={self.INITIAL_INFECTED}"
+        )
         plt.legend()
         plt.grid(True)
         plt.show()

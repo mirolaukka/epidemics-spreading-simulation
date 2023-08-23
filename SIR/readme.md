@@ -34,12 +34,10 @@ git clone https://github.com/mirolaukka/epidemics-spreading-simulation.git
 cd epidemics-spreading-simulation/SIR
 ```
 
-2. Open the `sir.py` file and customize the simulation parameters as needed.
-
-3. Run the simulation:
+2. Run the simulation test file or see [Example Usage](#example-usage) for more information:
 
 ```bash
-python sir.py
+python test_sir.py
 ```
 
 4. The simulation will either display live visualization using Pygame or plot the simulation results using Matplotlib.
